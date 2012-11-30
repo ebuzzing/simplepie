@@ -412,6 +412,10 @@ define('SIMPLEPIE_FILE_SOURCE_FILE_GET_CONTENTS', 16);
  */
 class SimplePie
 {
+
+    const NOT_VALID_RSS = 100;
+
+
 	/**
 	 * @var array Raw data
 	 * @access private
@@ -1353,7 +1357,9 @@ class SimplePie
 					if (!($this->get_type() & ~SIMPLEPIE_TYPE_NONE))
 					{
 						$this->error = "A feed could not be found at $this->feed_url. This does not appear to be a valid RSS or Atom feed.";
-						$this->registry->call('Misc', 'error', array($this->error, E_USER_NOTICE, __FILE__, __LINE__));
+
+                        throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS);
+
 						return false;
 					}
 
@@ -1517,7 +1523,7 @@ class SimplePie
 					if (!($file = $locate->find($this->autodiscovery, $this->all_discovered_feeds)))
 					{
 						$this->error = "A feed could not be found at $this->feed_url. A feed with an invalid mime type may fall victim to this error, or " . SIMPLEPIE_NAME . " was unable to auto-discover it.. Use force_feed() if you are certain this URL is a real feed.";
-						$this->registry->call('Misc', 'error', array($this->error, E_USER_NOTICE, __FILE__, __LINE__));
+						throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS);
 						return false;
 					}
 				}
@@ -1525,7 +1531,7 @@ class SimplePie
 				{
 					// This is usually because DOMDocument doesn't exist
 					$this->error = $e->getMessage();
-					$this->registry->call('Misc', 'error', array($this->error, E_USER_NOTICE, $e->getFile(), $e->getLine()));
+					throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS);
 					return false;
 				}
 				if ($cache)
