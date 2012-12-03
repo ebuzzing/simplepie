@@ -413,7 +413,8 @@ define('SIMPLEPIE_FILE_SOURCE_FILE_GET_CONTENTS', 16);
 class SimplePie
 {
 
-    const NOT_VALID_RSS = 100;
+    const NOT_VALID_RSS     = 100;
+    const NOT_VALID_RSS_102 = 102;
 
 
 	/**
@@ -1389,7 +1390,7 @@ class SimplePie
 			$this->error = 'The data could not be converted to UTF-8. You MUST have either the iconv or mbstring extension installed. Upgrading to PHP 5.x (which includes iconv) is highly recommended.';
 		}
 
-		throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS);
+		throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS_102);
 
 		return false;
 	}
