@@ -1389,7 +1389,7 @@ class SimplePie
 			$this->error = 'The data could not be converted to UTF-8. You MUST have either the iconv or mbstring extension installed. Upgrading to PHP 5.x (which includes iconv) is highly recommended.';
 		}
 
-		$this->registry->call('Misc', 'error', array($this->error, E_USER_NOTICE, __FILE__, __LINE__));
+		throw new SimplePie_Exception($this->error, self::NOT_VALID_RSS);
 
 		return false;
 	}
